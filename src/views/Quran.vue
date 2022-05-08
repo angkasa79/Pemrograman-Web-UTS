@@ -6,7 +6,7 @@
 
   <section class="surah">
     <div class="judul">
-      <h1 v-if="namasurah" class="judul">{{ namasurah.name_sample }}</h1>
+      <h1 v-if="namaSurah" class="judul">{{ namaSurah.name_sample }}</h1>
     </div>
     <div class="suara">
       <p v-if="audio">
@@ -35,7 +35,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      ayats:[],arti:[],audio:null,namasurah:null,myinput:"",
+      ayats:[],arti:[],audio:null,namaSurah:null,myinput:"",
     };
   },
   mounted() {
@@ -44,13 +44,13 @@ export default {
   methods: {
     async lihat() {
       let nomor = this.inputnomor;
-      let ayat = "https://api.quran.com/api/v4/quran/verses/uthmani?chapter_number=" +nomor;
+      let ayat = 'https://api.quran.com/api/v4/quran/verses/uthmani?chapter_number='+ nomor;
       let arti = "https://api.quran.com/api/v4/quran/translations/33?chapter_number=" +nomor;
       let judul = "https://api.quran.com/api/v4/chapters?language=id";
       let suara = "https://api.quran.com/api/v4/chapter_recitations/5?language=en";
 
       if (nomor <=0 || nomor > 114) {
-        alert("masukkan nomor yang bener");
+        alert("masukkan nomor sesuai dengan nomor surah yang ada di Al-Quran");
       }else{
         const reqAyat = axios.get(ayat);
         const reqArti = axios.get(arti);
@@ -79,10 +79,10 @@ export default {
             return res;
           };
 
-          this.ayats = gabung(a, b);
+          this.ayats = gabung(a,b);
           this.audio =
               responseSuara.data.audio_files[nomor - 1];
-          this.namasurah =
+          this.namaSurah =
               responseJudul.data.chapters[nomor - 1];
         }))
       };
